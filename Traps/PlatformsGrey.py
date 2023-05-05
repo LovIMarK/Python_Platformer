@@ -1,0 +1,36 @@
+from Var import *
+from Objects import Object
+
+class PlatformsGrey(Object):
+    ANIMATION_DELAY = 3
+
+    def __init__(self, x, y, width, height,direction):
+        super().__init__(x, y, width, height, "platformsGrey")
+        self.platforms = load_sprite_sheets("Traps", "Platforms", width, height)
+        self.image = self.platforms["Grey Off"][0]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.direction=direction
+        self.animation_count = 0
+        self.animation_name = "Grey Off"
+
+    def on(self):
+        self.animation_name = "Grey On (32x8)"
+
+
+    def off(self):
+        self.animation_name = "Grey Off"
+
+    def loop(self):
+        sprites = self.platforms[self.animation_name]
+        sprite_index = (self.animation_count //
+                        self.ANIMATION_DELAY) % len(sprites)
+        self.image = sprites[sprite_index]
+        self.animation_count += 1
+        if self.direction=="left":
+            pygame.transform.flip(self.image,True,True)
+        self.rect = self.image.get_rect(topleft=(self.rect.x, self.rect.y))
+        
+        self.mask = pygame.mask.from_surface(self.image)
+
+        if self.animation_count // self.ANIMATION_DELAY > len(sprites):
+            self.animation_count = 0
