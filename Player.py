@@ -31,12 +31,11 @@ class Player(pygame.sprite.Sprite):
         self.onfan=False
         self.onfan_count=0
         self.slide=False
-        self.int=1
         self.onChrono=True
         self.slash=False
         self.slash_count=False
-        self.levels=1
-        self.unlockLevel=1
+        self.levels=3
+        self.unlockLevel=3
 
 
     def Slide(self):
@@ -45,11 +44,11 @@ class Player(pygame.sprite.Sprite):
             self.jump_count = 0
             self.y_vel=2
         self.jump=False
-       
-        
+
+
     def StopSlide(self):
         self.slide=False
-    
+
     def Slash(self):
         self.slash=True
 
@@ -61,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         elif self.jump and  self.slide and self.direction=="right":
             self.x_vel = -20
 
-        
+
         self.slidePlat=False
         self.onfan=False
         self.onfan_count=0
@@ -71,7 +70,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_count += 1
         if self.jump_count == 1:
             self.fall_count = 0
-    
+
     def onFan(self):
         self.onfan=True
 
@@ -81,15 +80,15 @@ class Player(pygame.sprite.Sprite):
 
     def make_hit(self):
         self.hit = True
-        self.death+=1
 
-        
+
+
 
     def make_slidePlat(self):
         self.slidePlat=True
-    
 
-    
+
+
 
     def move_left(self, vel):
         self.x_vel = -vel
@@ -106,7 +105,6 @@ class Player(pygame.sprite.Sprite):
             self.animation_count = 0
 
     def loop(self, fps):
- 
         if  not self.onfan and not self.slide:
             self.y_vel += min(1, (self.fall_count / fps) * self.GRAVITY)
         elif self.slide:
@@ -123,8 +121,8 @@ class Player(pygame.sprite.Sprite):
 
 
 
-        if self.rect.y>HEIGHT or self.rect.y<HEIGHT - 96 * 11:
-            self.lives=0
+        # if self.rect.y>HEIGHT or self.rect.y<HEIGHT - 96 * 11:
+        #     self.lives=0
 
         if self.hit:
             self.hit_count += 1
@@ -132,7 +130,7 @@ class Player(pygame.sprite.Sprite):
                 self.lives-=1
                 self.hit = False
                 self.hit_count = 0
-            
+
 
         if self.hit_count > fps * 2:
             if self.hit:
@@ -144,15 +142,15 @@ class Player(pygame.sprite.Sprite):
         if self.slash_count>fps/10:
             self.slash_count=0
             self.slash=False
-        
+
         if self.slidePlat:
             self.x_vel = 2
-            
+
         self.move(self.x_vel, self.y_vel)
 
         self.fall_count += 1
         self.update_sprite()
-        
+
 
     def landed(self):
         self.fall_count = 0
@@ -167,6 +165,7 @@ class Player(pygame.sprite.Sprite):
         sprite_sheet = "idle"
         if self.hit:
             sprite_sheet = "hit"
+
         elif self.y_vel < 0:
             if self.jump_count == 1:
                 sprite_sheet = "jump"
@@ -194,5 +193,5 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.sprite.get_rect(topleft=(self.rect.x, self.rect.y))
         self.mask = pygame.mask.from_surface(self.sprite)
 
-    def draw(self, win, offset_x):
-        win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))
+    def draw(self, win, offset_x,offset_y):
+        win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y-offset_y))

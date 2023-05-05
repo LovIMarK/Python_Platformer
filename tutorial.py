@@ -15,7 +15,7 @@ def get_background(name):
     return tiles, image
 
 
-def draw(window, background, bg_image, player, objects, offset_x,scroll,particules,text):
+def draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,text):
   
     for tile in background:
         window.blit(bg_image, (tile[0]-scroll,tile[1]))
@@ -24,15 +24,15 @@ def draw(window, background, bg_image, player, objects, offset_x,scroll,particul
 
     
     for obj in particules:
-        obj.draw(window, offset_x)    
+        obj.draw(window, offset_x,offset_y)    
     for obj in objects:
-        obj.draw(window, offset_x)
+        obj.draw(window, offset_x,offset_y)
     
     for obj in text:
-        obj.draw(window, offset_x)
+        obj.draw(window, offset_x,offset_y)
    
 
-    player.draw(window, offset_x)
+    player.draw(window, offset_x,offset_y)
     pygame.display.update()
 
 
@@ -149,8 +149,8 @@ def handle_move(player, objects):
             
            
         elif obj and (obj.name== "spikes" or  obj.name== "spikeHead" or obj.name=="spikedBall"or obj.name=="saw"or obj.name=="plant"):
-            if obj.name=="plant":
-                obj.Hit()
+            #if obj.name=="plant":
+            #    obj.Hit()
             player.make_hit()
             
         elif obj and obj.name == "fire" and obj.animation_name=="off":
@@ -169,6 +169,7 @@ def handle_move(player, objects):
             player.checkPointX=obj.rect.x+obj.rect.width
             player.checkPointY=obj.rect.y
         elif obj and obj.name=="end":
+            obj.OnEnd()
             if player.onChrono:
                 player.levels+=1
                 if player.levels>player.unlockLevel:
@@ -187,11 +188,7 @@ def handle_move(player, objects):
             player.slidePlat=False
 
        
-        #if obj and obj.name =="fan" and player.rect.y+20>=obj.rect.y and (player.rect.x >obj.rect.x and player.rect.x <obj.rect.x+obj.image.get_width())  :
-            #print(player.rect.x)
-            #print(obj.rect.x)
-            #player.fan()
-            #player.rect.y-=10
+
 
 
 
@@ -214,7 +211,7 @@ def Handle_plant(player,plant,objects):
     for obj in objects:
         if pygame.sprite.collide_rect( player,plant.bullet):
            if plant.bulletExist:
-                #player.make_hit()
+                player.make_hit()
                 objects.remove(plant.bullet)
                 plant.bulletExist=False
                 plant.bullet=Bullet(plant.rect.x,plant.rect.y+16,16,16)    
@@ -261,16 +258,16 @@ def Handle_plant(player,plant,objects):
 
 block_size = 96
 player = Player(0, HEIGHT - block_size-50, 50, 50)
-buttonLevels = Button(player.rect.x+(WIDTH/2)-60,0, 21, 22,"Levels" )
-buttonRetry = Button(player.rect.x+(WIDTH/2)-60-buttonLevels.image.get_width(),0, 21, 22,"Restart" )
-buttonNext = Button(player.rect.x+(WIDTH/2)-60-buttonLevels.image.get_width()-buttonRetry.image.get_width(),0, 21, 22,"Next" )
+
 def main(window):
     paused=False
     clock = pygame.time.Clock()
     player.rect.x=0
     player.rect.y=HEIGHT - block_size-50
-    background, bg_image = get_background("Yellow.png")
+    background, bg_image = get_background("pink.png")
     offset_x = player.rect.x-(WIDTH/2)
+    offset_y = 0
+    scroll_area_height =  300
     scroll_area_width =  WIDTH/2 #300#
     
     scroll=0
@@ -282,7 +279,9 @@ def main(window):
     PausedTime=0
     PausedDuration=0
     times=0
-
+    buttonLevels = Button(player.rect.x+(WIDTH/2)-60,0, 21, 22,"Levels" )
+    buttonRetry = Button(buttonLevels.rect.x-buttonLevels.image.get_width(),0, 21, 22,"Restart" )
+    buttonNext = Button(buttonRetry.rect.x-buttonRetry.image.get_width(),0, 21, 22,"Next" )
     
     onMenu=False
     levels=player.levels
@@ -298,7 +297,7 @@ def main(window):
 
 
     objects = ActualLevel.showLevel()
-
+    player.onChrono=True
 
     for obj in objects:
         if obj.name == "fan":
@@ -313,8 +312,7 @@ def main(window):
             obj.on()
         elif obj.name == "spikes":
             obj.on()
-        elif obj.name == "fan":
-            obj.on()
+
 
 
 
@@ -324,6 +322,11 @@ def main(window):
     
 
     while run:
+        textes=[]
+        textes.append(buttonLevels)
+        if not player.onChrono or levels<player.unlockLevel:
+            textes.append(buttonNext)            
+        textes.append(buttonRetry)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -343,15 +346,24 @@ def main(window):
                         
             elif event.type == pygame.MOUSEBUTTONDOWN :
                 posMouse = pygame.mouse.get_pos()
-                if buttonRetry.rect.collidepoint(event.pos):
-                    main(window)
-                elif buttonNext.rect.collidepoint(event.pos):
-                    pass
+                if buttonRetry.Clicked():
+                    if player.onChrono:
+                        main(window)
+                    else:
+                        player.levels-=1
+                        main(window)
+
+                elif buttonNext.Clicked() and levels<player.unlockLevel:
+                    if player.onChrono:
+                        player.levels+=1
+                        main(window)
+                    else:
+                        main(window)
+
                 for obj in buttonLevels.BUTTONS:
                     if obj.rect.collidepoint(event.pos):
                         if buttonLevels.BUTTONS.index(obj)+1 <=player.unlockLevel:
                             player.levels=buttonLevels.BUTTONS.index(obj)+1
-                            player.onChrono=True
                             main(window)
                 if buttonLevels.Clicked() and (not paused or not player.onChrono and not onMenu ):
                     
@@ -375,12 +387,7 @@ def main(window):
 
 
         if paused:
-            textes=[]
-            textes.append(buttonLevels)
-            # if not player.onChrono:
-            #     textes.append(buttonNext)
-            textes.append(buttonNext)
-            textes.append(buttonRetry)
+
 
             if not PausedTime:
                 PausedTime=time.time()
@@ -390,21 +397,22 @@ def main(window):
                 
                 player.loop(FPS)
                 handle_move(player, objects)
-                draw(window, background, bg_image, player, objects, offset_x,scroll,particules,textes)
-                
+                for obj in objects:
+                    if obj.name=="end":
+                        obj.loop()
+                draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes)
                 
 
         elif not paused:
 
-            textes=[]
+            
             Fps=[]
             ChronoList=[]
             posFps=64
             posChrono=0
             
 
-            textes.append(buttonLevels)
-            textes.append(buttonRetry)
+            
             
 
             if PausedTime:
@@ -453,7 +461,7 @@ def main(window):
             if abs(scroll) > bg_image.get_width():
                 scroll = 0
 
-            clock.tick(FPS)
+            
 
 
 
@@ -508,27 +516,40 @@ def main(window):
             player.loop(FPS)
             handle_move(player, objects)            
             
-            draw(window, background, bg_image, player, objects, offset_x,scroll,particules,textes)
+            draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes)
             
+        
 
 
             if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or (
                     (player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
                 offset_x += player.x_vel
                 buttonLevels.rect.x +=player.x_vel
+                buttonRetry.rect.x +=player.x_vel
+                buttonNext.rect.x +=player.x_vel
+
+            # if ((player.rect.bottom>=HEIGHT -scroll_area_height ) and player.y_vel > 0) or ((player.rect.bottom- offset_y<=scroll_area_width) and player.y_vel < 0) :
+            #     offset_y += player.y_vel
+            #     buttonLevels.rect.y +=player.y_vel
+            #     buttonRetry.rect.y +=player.y_vel
+            #     buttonNext.rect.y +=player.y_vel
+
             
-         
             if player.lives==0 and player.checkPointX==0:
                 offset_x=0-scroll_area_width
                 buttonLevels.rect.x =WIDTH-60 -scroll_area_width
+                buttonRetry.rect.x =WIDTH-60 -scroll_area_width -buttonLevels.image.get_width()
+                buttonNext.rect.x =WIDTH-60 -scroll_area_width-buttonLevels.image.get_width() -buttonRetry.image.get_width()
             elif player.lives==0:
                 offset_x=player.checkPointX-scroll_area_width
                 buttonLevels.rect.x =player.checkPointX +WIDTH-60-scroll_area_width
+                buttonRetry.rect.x =player.checkPointX +WIDTH-60-scroll_area_width-buttonLevels.image.get_width()
+                buttonNext.rect.x =player.checkPointX +WIDTH-60-scroll_area_width -buttonLevels.image.get_width()-buttonRetry.image.get_width()
 
             if not player.onChrono:
                 paused=True
             
-
+        clock.tick(FPS)
 
     pygame.quit()
     quit()

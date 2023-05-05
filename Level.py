@@ -254,12 +254,18 @@ class Level():
 
 
 
-            Block(block_size * -2, HEIGHT - block_size * 1, block_size,BIGROCK),
-            Block(block_size * -2, HEIGHT - block_size * 2, block_size,BIGROCK),
-            Block(block_size * -2, HEIGHT - block_size * 3, block_size,BIGROCK),
-            Block(block_size * -2, HEIGHT - block_size * 4, block_size,BIGROCK),
-            Block(block_size * -2, HEIGHT - block_size * 5, block_size,BIGROCK),
-            Block(block_size * -2, HEIGHT - block_size * 6, block_size,BIGROCK),
+            Block(block_size * -2, HEIGHT - block_size * 1, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 2, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 3, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 4, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 5, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 6, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 7, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 8, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 9, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 10, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 11, block_size,BIGDIRT),
+            Block(block_size * -2, HEIGHT - block_size * 12, block_size,BIGDIRT),
 
         ]
         for obj in wallDown:
@@ -271,7 +277,6 @@ class Level():
 
 
         start.on()
-        end.OnEnd()
         objects = [
             *floor,
                 *blocks,
@@ -296,7 +301,9 @@ class Level():
     def Level2(self,block_size):
 
 
-        end = End(block_size * 4, HEIGHT - block_size * 6-32,64,64)
+        checkPoint=Checkpoint(block_size * 19, HEIGHT - block_size *2-32,64,64)
+        start=Start(0-24,HEIGHT - block_size *3-32,64,64)
+        end = End(block_size * 34,HEIGHT - block_size*2-32,64,64)
 
         blocks=[
             Block(0, HEIGHT - block_size * 2, block_size,BIGDIRT),
@@ -308,26 +315,73 @@ class Level():
 
         ]
         
+        floor = [
+                Block(i * block_size, HEIGHT - block_size, block_size,BIGDIRT)
+                for i in range(35)
+                if i < 5 or i > 17 and i < 23 or i > 29
+                ]
 
+        start.on()
         objects = [
+                *floor,
                 *blocks,
-                end
+                start,
+                checkPoint,
+                end,
+                # *platformsGreys,
+                # *spikeHeads,
+                # *fires,
+                # *fans,
+                # *falling,
+                # *trampolines,
+                # *spikes,
+                # *plants,
+                # *spikedBalls,
+                # *saws
                 ]
 
         return objects
     
     def Level3(self,block_size):
 
-        blocks=[
-            Block(0, HEIGHT - block_size * 2, block_size,BIGDIRT),
+        checkPoint=Checkpoint(block_size * 19, HEIGHT - block_size *1-32,64,64)
+        start=Start(0-24,HEIGHT - block_size *2+32,64,64)
+        end = End(block_size * 34,HEIGHT - block_size*2-32,64,64)
+
+        
+        
+        fire =Fire(0,0, 16, 32)
+        fires=[
             
+            Fire(0+i*fire.image.get_width(), HEIGHT - block_size * 1+32, 16, 32)
+            for i in range(11)
         ]
-        end = End(block_size * 3, HEIGHT - block_size * 2-32,64,64)
+        blocks=[
+            
+                Block(block_size * -1, HEIGHT - block_size * i, block_size,BIGROCK)
+                for i in range(11)
+        ]
 
 
+
+
+        start.on()
         objects = [
+                #*floor,
                 *blocks,
-                end
+                start,
+                checkPoint,
+                end,
+                # *platformsGreys,
+                # *spikeHeads,
+                *fires,
+                # *fans,
+                # *falling,
+                # *trampolines,
+                # *spikes,
+                # *plants,
+                # *spikedBalls,
+                # *saws
                 ]
 
         return objects
