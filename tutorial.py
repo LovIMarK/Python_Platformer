@@ -15,7 +15,7 @@ def get_background(name):
     return tiles, image
 
 
-def draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,text):
+def draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,text,decoration):
   
     for tile in background:
         window.blit(bg_image, (tile[0]-scroll,tile[1]))
@@ -29,6 +29,8 @@ def draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll
         obj.draw(window, offset_x,offset_y)
     
     for obj in text:
+        obj.draw(window, offset_x,offset_y)
+    for obj in decoration:
         obj.draw(window, offset_x,offset_y)
    
 
@@ -73,6 +75,26 @@ def handleCollisionSpikeHead(spikehead,objects):
     return collided_objects
     
 
+def handle_Decoration(player,decoration):
+    for obj in decoration:
+        if pygame.sprite.collide_mask(player, obj):
+            if obj.name!="checkPoint" and obj.name!="end" and obj.name!="start":
+                obj.Collected()
+                player.score+=10
+            elif obj and obj.name=="checkPoint" and obj.CheckPoint_count==0:
+                obj.Check()
+                player.checkPointX=obj.rect.x+obj.rect.width
+                player.checkPointY=obj.rect.y
+            elif obj and obj.name=="end":
+                obj.OnEnd()
+                if player.onChrono:
+                    player.levels+=1
+                    if player.levels>player.unlockLevel:
+                        player.unlockLevel+=1
+                player.onChrono=False   
+        elif obj.name!="checkPoint" and obj.name!="end" and obj.name!="start"and not obj.exist:
+            decoration.remove(obj)
+
 
 
 
@@ -81,13 +103,11 @@ def handle_vertical_collision(player, objects, dy):
     for obj in objects:
         if pygame.sprite.collide_mask(player, obj):
             if dy > 0:
-                if obj.name!="start" and  obj.name!="checkPoint" and  obj.name!="end" :
-                    player.rect.bottom = obj.rect.top
-                    player.landed()
+                player.rect.bottom = obj.rect.top
+                player.landed()
             elif dy < 0:
-                if obj.name!="start" and  obj.name!="checkPoint" and  obj.name!="end" :
-                    player.rect.top = obj.rect.bottom
-                    player.hit_head()
+                player.rect.top = obj.rect.bottom
+                player.hit_head()
 
             collided_objects.append(obj)
 
@@ -164,23 +184,8 @@ def handle_move(player, objects):
 
         elif obj and (obj.name =="platformsGrey" or obj.name =="platformsBrown"):
             player.make_slidePlat()
-        elif obj and obj.name=="checkPoint" and obj.CheckPoint_count==0:
-            obj.Check()
-            player.checkPointX=obj.rect.x+obj.rect.width
-            player.checkPointY=obj.rect.y
-        elif obj and obj.name=="end":
-            obj.OnEnd()
-            if player.onChrono:
-                player.levels+=1
-                if player.levels>player.unlockLevel:
-                    player.unlockLevel+=1
-            player.onChrono=False
         elif obj and (obj.name=="fallingPlatforms"):
             obj.onFalling()
-        
-        
-  
-            
 
 
 
@@ -300,7 +305,7 @@ def main(window):
     particules=[]
 
 
-    objects = ActualLevel.showLevel()
+    objects,decoration = ActualLevel.showLevel()
     background, bg_image = get_background(ActualLevel.background)
 
     player.onChrono=True
@@ -406,7 +411,7 @@ def main(window):
                 for obj in objects:
                     if obj.name=="end":
                         obj.loop()
-                draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes)
+                draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes,decoration)
                 
 
         elif not paused:
@@ -512,18 +517,20 @@ def main(window):
                     obj.loop()
                     if obj.bulletExist:
                         obj.bullet.loop()
-                elif obj.name == "checkPoint":
+            for obj in decoration:
+                if obj.name == "checkPoint":
                     obj.loop()
                 elif obj.name == "start":
                     obj.loop()
                 elif obj.name == "end":
                     obj.loop()
+                elif obj.name == "fruit":
+                    obj.loop()
                 
             player.loop(FPS)
             handle_move(player, objects)            
-            
-            draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes)
-            
+            handle_Decoration(player,decoration)
+            draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes,decoration)
         
 
             if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or (

@@ -34,8 +34,9 @@ class Player(pygame.sprite.Sprite):
         self.onChrono=True
         self.slash=False
         self.slash_count=False
-        self.levels=3
-        self.unlockLevel=3
+        self.levels=2
+        self.unlockLevel=5
+        self.score =0
 
 
     def Slide(self):

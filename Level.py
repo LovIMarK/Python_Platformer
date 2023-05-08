@@ -189,12 +189,7 @@ class Level():
         #         Saw(block_size *1, HEIGHT - block_size*6, 38, 38,7,30,90)
         # ]
 
-        # spikedBalls= [
 
-        #     SpikedBall(block_size *2, HEIGHT - block_size*6, 28, 28,7,5,45),
-        #     SpikedBall(block_size *33, HEIGHT - block_size*3, 28, 28,7,5,45)
-        
-        #     ]
 
         spikeHeads=[
             SpikeHead(block_size * 5, HEIGHT - block_size * 3,54,52),
@@ -245,10 +240,11 @@ class Level():
             Block(0, HEIGHT - block_size * 2, block_size,BIGDIRT),
             Block(block_size *8-trampoline.image.get_width() , HEIGHT - block_size  * 5 + trampoline.image.get_height() , block_size-32,ROCKSTEIN),
             
-            Block(block_size * 2-6, HEIGHT - block_size * 6-10, 29,LITTLECHAIN),
             Block(block_size * 4, HEIGHT - block_size * 4, block_size,BIGDIRT),
             Block(block_size * 3, HEIGHT - block_size * 4, block_size,BIGDIRT),
             Block(block_size * 4, HEIGHT - block_size * 5, block_size,BIGDIRT),
+            Block(block_size * 3, HEIGHT - block_size * 3, block_size,BIGDIRT),
+            Block(block_size * 4, HEIGHT - block_size * 3, block_size,BIGDIRT),
 
 
 
@@ -256,23 +252,23 @@ class Level():
             Block(block_size * 18, HEIGHT - block_size * 3, block_size,BIGDIRT),
             Block(block_size * 10, HEIGHT - block_size * 3, block_size,BIGDIRT),
             Block(block_size * 10, HEIGHT - block_size * 4, block_size,BIGDIRT),
+            
 
 
-
-            Block(0-(WIDTH/2), HEIGHT - block_size * 1, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 2, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 3, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 4, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 5, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 6, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 7, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 8, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 9, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 10, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 11, block_size,BIGDIRT),
-            Block(0-(WIDTH/2), HEIGHT - block_size * 12, block_size,BIGDIRT),
 
         ]
+        FirstWall = [
+        Block(  0-(WIDTH/2),  HEIGHT -  block_size*i,block_size,BIGDIRT)
+        for i in range(1,12)
+        ]
+    
+
+
+        for obj in FirstWall:
+            blocks.append(obj)
+
+
+
         for obj in wallDown:
             blocks.append(obj)
         for obj in wallUp:
@@ -285,9 +281,6 @@ class Level():
         objects = [
             *floor,
                 *blocks,
-                start,
-                checkPoint,
-                end,
                 *platformsGreys,
                 *spikeHeads,
                 *fires,
@@ -296,11 +289,15 @@ class Level():
                 *trampolines,
                 *spikes,
                 *plants,
-                #*spikedBalls,
-                #*saws
+
                 ]
-                
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+        return objects,decoration
     
 
     def Level2(self,block_size):
@@ -320,6 +317,15 @@ class Level():
 
         ]
         
+        FirstWall = [
+        Block(  0-(WIDTH/2),  HEIGHT -  block_size*i,block_size,BIGDIRT)
+        for i in range(1,12)
+        ]
+    
+        for obj in FirstWall:
+            blocks.append(obj)
+
+
         floor = [
                 Block(i * block_size, HEIGHT - block_size, block_size,BIGDIRT)
                 for i in range(35)
@@ -329,9 +335,7 @@ class Level():
         objects = [
                 *floor,
                 *blocks,
-                start,
-                checkPoint,
-                end,
+               
                 # *platformsGreys,
                 # *spikeHeads,
                 # *fires,
@@ -343,8 +347,15 @@ class Level():
                 # *spikedBalls,
                 # *saws
                 ]
+        
+        decoration=[
+            start,
+            checkPoint,
+            end,
 
-        return objects
+        ]
+
+        return objects,decoration
     
     def Level3(self,block_size):
 
@@ -483,14 +494,13 @@ class Level():
             
         ]
 
+        fruits=[Fruit( block_size * 12,HEIGHT - block_size*2,32,32,"Apple")]
+
 
         start.on()
         objects = [
                 #*floor,
                 *blocks,
-                start,
-                checkPoint,
-                end,
                 # *platformsGreys,
                 *spikeHeads,
                 *fires,
@@ -503,7 +513,15 @@ class Level():
                 # *saws
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+            *fruits
+
+        ]
+
+        return objects,decoration
     
     def Level4(self,block_size):
 
@@ -517,7 +535,14 @@ class Level():
                 end
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+
+        return objects,decoration
     
     def Level5(self,block_size):
 
@@ -530,7 +555,14 @@ class Level():
                 *blocks
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+
+        return objects,decoration
 
     def Level6(self,block_size):
 
@@ -543,7 +575,14 @@ class Level():
                 *blocks
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+
+        return objects,decoration
     
     def Level7(self,block_size):
 
@@ -556,7 +595,13 @@ class Level():
                 *blocks
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+        return objects,decoration
     
     def Level8(self,block_size):
 
@@ -569,7 +614,13 @@ class Level():
                 *blocks
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+        return objects,decoration
     def Level9(self,block_size):
 
         blocks=[
@@ -581,7 +632,13 @@ class Level():
                 *blocks
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+        return objects,decoration
         
 
     def Level10(self,block_size):
@@ -595,7 +652,13 @@ class Level():
                 *blocks
                 ]
 
-        return objects
+        decoration=[
+            start,
+            checkPoint,
+            end,
+
+        ]
+        return objects,decoration
     
     def Level11(self,block_size):
 
