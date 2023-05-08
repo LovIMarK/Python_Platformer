@@ -43,7 +43,7 @@ def handleCollisionSpikeHead(spikehead,objects):
     collided_objects = []
     for obj in objects:
         if pygame.sprite.collide_mask(spikehead, obj):
-            if obj.name!= "spikeHead"  :
+            if obj.name!= "spikeHead" and obj.name!= "start" and obj.name!= "fire" :
                 spikehead.collide=True
                 if spikehead.direction==0:
                     spikehead.Left()
@@ -146,12 +146,13 @@ def handle_move(player, objects):
     for obj in to_check:
         if obj and obj.name == "fire" and obj.animation_name=="on" :
             player.make_hit()
-            
+            pass
            
         elif obj and (obj.name== "spikes" or  obj.name== "spikeHead" or obj.name=="spikedBall"or obj.name=="saw"or obj.name=="plant"):
             #if obj.name=="plant":
             #    obj.Hit()
             player.make_hit()
+            pass
             
         elif obj and obj.name == "fire" and obj.animation_name=="off":
             obj.hit() 
@@ -160,8 +161,7 @@ def handle_move(player, objects):
             player.Jump()
             player.jump_count+=1
             obj.Jump()
-        elif obj and obj.name=="fan":
-            pass
+
         elif obj and (obj.name =="platformsGrey" or obj.name =="platformsBrown"):
             player.make_slidePlat()
         elif obj and obj.name=="checkPoint" and obj.CheckPoint_count==0:
@@ -257,14 +257,18 @@ def Handle_plant(player,plant,objects):
 
 
 block_size = 96
+
 player = Player(0, HEIGHT - block_size-50, 50, 50)
 
 def main(window):
     paused=False
+    ActualLevel=Level(player.levels,block_size)
     clock = pygame.time.Clock()
-    player.rect.x=0
+    player.rect.x= 0
     player.rect.y=HEIGHT - block_size-50
-    background, bg_image = get_background("pink.png")
+    player.checkPointX=0
+    player.checkPointY=500
+
     offset_x = player.rect.x-(WIDTH/2)
     offset_y = 0
     scroll_area_height =  300
@@ -292,11 +296,13 @@ def main(window):
 
     
     
-    ActualLevel=Level(player.levels,block_size)
+   
     particules=[]
 
 
     objects = ActualLevel.showLevel()
+    background, bg_image = get_background(ActualLevel.background)
+
     player.onChrono=True
 
     for obj in objects:
@@ -520,9 +526,8 @@ def main(window):
             
         
 
-
             if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or (
-                    (player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
+                    (player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0 and player.rect.x>0):
                 offset_x += player.x_vel
                 buttonLevels.rect.x +=player.x_vel
                 buttonRetry.rect.x +=player.x_vel

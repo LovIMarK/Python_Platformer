@@ -4,7 +4,7 @@ from Objects import Object
 class Fire(Object):
     ANIMATION_DELAY = 3
 
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height,fire=False):
         super().__init__(x, y, width, height, "fire")
         self.fire = load_sprite_sheets("Traps", "Fire", width, height)
         self.image = self.fire["off"][0]
@@ -15,6 +15,7 @@ class Fire(Object):
         self.fire_count=0
         self.offFire=False
         self.fireOff_count=0
+        self.infini=fire
 
     def on(self):
         self.animation_name = "on"
@@ -47,7 +48,7 @@ class Fire(Object):
             self.onFire=False
         if self.offFire:
             self.fireOff_count+=1
-        if  self.fireOff_count>FPS*2:
+        if  self.fireOff_count>FPS*2 and not self.infini:
             self.off()
             self.fireOff_count=0
             self.offFire=False

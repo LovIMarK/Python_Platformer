@@ -8,6 +8,7 @@ class Level():
     def __init__(self,level,block_size):
         self.level=level
         self.block_size=block_size
+        self.background="yellow.png"
         
     
     def showLevel(self):
@@ -169,17 +170,10 @@ class Level():
         
         
 
-        saws=[
-                Saw(block_size *1, HEIGHT - block_size*6, 38, 38,7,30,90)
-        ]
-
-
-        spikedBalls= [
-
-            SpikedBall(block_size *2, HEIGHT - block_size*6, 28, 28,7,5,45),
-            SpikedBall(block_size *33, HEIGHT - block_size*3, 28, 28,7,5,45)
         
-            ]
+
+
+       
         
         
 
@@ -190,6 +184,17 @@ class Level():
                 if i % 2 == 0
             ]
         
+
+        # saws=[
+        #         Saw(block_size *1, HEIGHT - block_size*6, 38, 38,7,30,90)
+        # ]
+
+        # spikedBalls= [
+
+        #     SpikedBall(block_size *2, HEIGHT - block_size*6, 28, 28,7,5,45),
+        #     SpikedBall(block_size *33, HEIGHT - block_size*3, 28, 28,7,5,45)
+        
+        #     ]
 
         spikeHeads=[
             SpikeHead(block_size * 5, HEIGHT - block_size * 3,54,52),
@@ -254,18 +259,18 @@ class Level():
 
 
 
-            Block(block_size * -2, HEIGHT - block_size * 1, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 2, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 3, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 4, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 5, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 6, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 7, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 8, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 9, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 10, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 11, block_size,BIGDIRT),
-            Block(block_size * -2, HEIGHT - block_size * 12, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 1, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 2, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 3, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 4, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 5, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 6, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 7, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 8, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 9, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 10, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 11, block_size,BIGDIRT),
+            Block(0-(WIDTH/2), HEIGHT - block_size * 12, block_size,BIGDIRT),
 
         ]
         for obj in wallDown:
@@ -291,8 +296,8 @@ class Level():
                 *trampolines,
                 *spikes,
                 *plants,
-                *spikedBalls,
-                *saws
+                #*spikedBalls,
+                #*saws
                 ]
                 
         return objects
@@ -320,7 +325,6 @@ class Level():
                 for i in range(35)
                 if i < 5 or i > 17 and i < 23 or i > 29
                 ]
-
         start.on()
         objects = [
                 *floor,
@@ -344,25 +348,140 @@ class Level():
     
     def Level3(self,block_size):
 
-        checkPoint=Checkpoint(block_size * 19, HEIGHT - block_size *1-32,64,64)
+        checkPoint=Checkpoint(block_size * 20, HEIGHT - block_size * 5-32,64,64)
         start=Start(0-24,HEIGHT - block_size *2+32,64,64)
-        end = End(block_size * 34,HEIGHT - block_size*2-32,64,64)
+        end = End(block_size * 40,HEIGHT - block_size*5-32,64,64)
 
         
         
         fire =Fire(0,0, 16, 32)
         fires=[
             
-            Fire(0+i*fire.image.get_width(), HEIGHT - block_size * 1+32, 16, 32)
-            for i in range(11)
+            Fire(0-(WIDTH/2)+i*fire.image.get_width(), HEIGHT - block_size * 1+32, 16, 32)
+            for i in range(88)
+            if i<61 or i>75
         ]
+
+
+        fireFirstRun=[
+            Fire(block_size * 7+i*fire.image.get_width(), HEIGHT - block_size * 4+63, 16, 32)
+            for i in range(21)
+
+        ]
+        Second=[
+            Fire(block_size * 28+i*fire.image.get_width(), HEIGHT - block_size * 6+63+32, 16, 32)
+            for i in range(19)
+            if i<19 
+
+
+        ]
+       
+        for i in range(19):
+            if i%3==0:
+                fire=Fire(block_size * 28+i*fire.image.get_width(), HEIGHT - block_size * 6+63, 16, 32,True)
+                fire.on()
+                fires.append(fire)
+
+
+
+
+        for obj in fireFirstRun:
+            fires.append(obj)
+        for obj in Second:
+            fires.append(obj)
+
+
         blocks=[
+               
+                ##first trap
+                Block( block_size * 6, HEIGHT - block_size * 3, block_size,BIGROCK),
+                Block( block_size * 13, HEIGHT - block_size * 1, block_size,BIGROCK),
+                Block( block_size * 13, HEIGHT - block_size * 2, block_size,BIGROCK),
+                Block( block_size * 13, HEIGHT - block_size * 3, block_size,BIGROCK),
+
+
+
+                ##checkPoint
+                Block( block_size * 20, HEIGHT - block_size * 4, block_size,BIGROCK),
+                Block( block_size * 21, HEIGHT - block_size * 4, block_size,BIGROCK),
+
+
+
+                Block( block_size * 24, HEIGHT - block_size * 6, block_size,BIGROCK),
+
+
+                 Block( block_size * 35,HEIGHT - block_size*4, block_size,BIGROCK),
+
+                ## spikedwall
+                Block( block_size * 29, HEIGHT - block_size * 8, block_size,BIGROCK),
+                Block( block_size * 30, HEIGHT - block_size * 8, block_size,BIGROCK),
+                Block( block_size * 31, HEIGHT - block_size * 8, block_size,BIGROCK),
+                Block( block_size * 32, HEIGHT - block_size * 8, block_size,BIGROCK),
+                Block( block_size * 33, HEIGHT - block_size * 8, block_size,BIGROCK),
+                Block( block_size * 34, HEIGHT - block_size * 8, block_size,BIGROCK),
+                Block( block_size * 35, HEIGHT - block_size * 8, block_size,BIGROCK),
+                Block( block_size * 35, HEIGHT - block_size * 7, block_size,BIGROCK),
+                Block( block_size * 35, HEIGHT - block_size * 6, block_size,BIGROCK),
+                Block( block_size * 35, HEIGHT - block_size * 5, block_size,BIGROCK),
+
+
+                Block( block_size * 34,HEIGHT - block_size*2, block_size,BIGROCK),
+                Block( block_size * 35,HEIGHT - block_size*2, block_size,BIGROCK),
+                Block( block_size * 36,HEIGHT - block_size*2, block_size,BIGROCK),
+
+                Block( block_size * 37,HEIGHT - block_size*2, block_size,BIGROCK),
+                Block( block_size * 37,HEIGHT - block_size*3, block_size,BIGROCK),
+
+                Block( block_size * 38,HEIGHT - block_size*2, block_size,BIGROCK),
+                Block( block_size * 38,HEIGHT - block_size*3, block_size,BIGROCK),
+                Block( block_size * 38,HEIGHT - block_size*4, block_size,BIGROCK),
+
+                Block( block_size * 39,HEIGHT - block_size*2, block_size,BIGROCK),
+                Block( block_size * 39,HEIGHT - block_size*3, block_size,BIGROCK),
+                Block( block_size * 39,HEIGHT - block_size*4, block_size,BIGROCK),
+                Block( block_size * 40,HEIGHT - block_size*2, block_size,BIGROCK),
+                Block( block_size * 40,HEIGHT - block_size*3, block_size,BIGROCK),
+                Block( block_size * 40,HEIGHT - block_size*4, block_size,BIGROCK),
+
+
+        ]
+        wall=[
             
-                Block(block_size * -1, HEIGHT - block_size * i, block_size,BIGROCK)
+                Block(0-(WIDTH/2), HEIGHT - block_size * i, block_size,BIGROCK)
                 for i in range(11)
         ]
 
+        for obj in wall:
+            blocks.append(obj)
 
+        spike =Spikes(0,0, 16, 20,"up")
+        spikes=[
+            Spikes(block_size * 29-32, HEIGHT - block_size* 7-32, 16, 20,"left"),
+            Spikes(block_size * 29-32, HEIGHT - block_size* 7-64, 16, 20,"left"),
+            Spikes(block_size * 29-32, HEIGHT - block_size* 7-96, 16, 20,"left"),
+            Spikes(block_size * 29, HEIGHT - block_size* 8-32, 16, 20,"up"),
+
+            Spikes(block_size * 37-32, HEIGHT - block_size* 2-96, 16, 20,"left"),
+            Spikes(block_size * 38-32, HEIGHT - block_size* 3-96, 16, 20,"left"),
+
+
+
+        ]
+        posy=3
+        for a in range(5) :
+            for i in range(3):
+                spikes.append(Spikes(block_size * 36-8, HEIGHT - block_size* posy-((spike.width*2)*(i+1)), 16, 20,"right"))
+            posy+=1
+       
+
+        spikeHeads=[
+            SpikeHead(block_size * -4, HEIGHT - block_size * 1,54,52),
+            SpikeHead(block_size * -3, HEIGHT - block_size * 2,54,52),
+            SpikeHead(block_size * 10, HEIGHT - block_size * 4,54,52,1),
+            SpikeHead(block_size * 17, HEIGHT - block_size * 2,54,52,1),
+            SpikeHead(block_size * 22, HEIGHT - block_size * 4,54,52)
+            
+        ]
 
 
         start.on()
@@ -373,14 +492,14 @@ class Level():
                 checkPoint,
                 end,
                 # *platformsGreys,
-                # *spikeHeads,
+                *spikeHeads,
                 *fires,
                 # *fans,
                 # *falling,
                 # *trampolines,
-                # *spikes,
+                *spikes,
                 # *plants,
-                # *spikedBalls,
+                #*spikedBalls,
                 # *saws
                 ]
 

@@ -5,7 +5,7 @@ from Objects import Object
 class SpikeHead(Object):
     ANIMATION_DELAY = 10
 
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height,direction=0):
         super().__init__(x, y, width, height, "spikeHead")
         self.platforms = load_sprite_sheets("Traps", "Spike Head", width, height)
         self.image = self.platforms["Idle"][0]
@@ -14,7 +14,7 @@ class SpikeHead(Object):
         self.animation_name = "Idle"
         self.collide=False
         self.collide_count=0
-        self.direction=0
+        self.direction=direction
         self.velo=5
 
     

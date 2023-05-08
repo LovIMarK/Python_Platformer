@@ -6,7 +6,7 @@ from Var import *
 class Player(pygame.sprite.Sprite):
     COLOR = (255, 0, 0)
     GRAVITY = 1
-    SPRITES = load_sprite_sheets("MainCharacters", "NinjaFrog", 32, 32, True)
+    SPRITES = load_sprite_sheets("MainCharacters", "VirtualGuy", 32, 32, True)
     ANIMATION_DELAY = 3
     LIFE=1
 
@@ -121,8 +121,8 @@ class Player(pygame.sprite.Sprite):
 
 
 
-        # if self.rect.y>HEIGHT or self.rect.y<HEIGHT - 96 * 11:
-        #     self.lives=0
+        if self.rect.y>HEIGHT or self.rect.y<HEIGHT - 96 * 11:
+            self.lives=0
 
         if self.hit:
             self.hit_count += 1

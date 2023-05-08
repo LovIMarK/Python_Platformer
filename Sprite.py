@@ -37,8 +37,11 @@ def get_block(size,location):
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
 
-def get_text(size,location):
-    path = join("assets", "Menu\Text", "Text (Black) (8x10).png")
+def get_text(size,location,color):
+    if color=="white":
+        path = join("assets", "Menu\Text", "Text (White) (8x10).png")
+    elif color=="black":
+        path = join("assets", "Menu\Text", "Text (Black) (8x10).png")
     image = pygame.image.load(path).convert_alpha()
     surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
     rect = pygame.Rect(location[0],location[1], size, size)
