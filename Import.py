@@ -4,6 +4,8 @@ sys.path.append('./Checkpoints')
 sys.path.append('./Traps')
 from Objects import Object
 from Bullet import Bullet
+from Dar import Dar
+from Bee import Bee
 from Player import Player
 from Plant import Plant
 from Block import Block

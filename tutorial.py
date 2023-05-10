@@ -105,7 +105,7 @@ def handle_vertical_collision(player, objects, dy):
             if dy > 0:
                 player.rect.bottom = obj.rect.top
                 player.landed()
-            elif dy < 0:
+            elif dy < 0 and obj.name!="woodPlat":
                 player.rect.top = obj.rect.bottom
                 player.hit_head()
 
@@ -132,12 +132,10 @@ def collide(player, objects, dx):
     
     return collided_object
 
-
 def handle_move(player, objects):
-    
     keys = pygame.key.get_pressed()
-
-    player.x_vel = 0
+    if not player.slidePlatRight and not player.slidePlatLeft:
+        player.x_vel = 0
     collide_left = collide(player, objects, -PLAYER_VEL * 2)
     collide_right = collide(player, objects, PLAYER_VEL * 2)
 
@@ -165,13 +163,13 @@ def handle_move(player, objects):
 
     for obj in to_check:
         if obj and obj.name == "fire" and obj.animation_name=="on" :
-            player.make_hit()
+            #player.make_hit()
             pass
            
-        elif obj and (obj.name== "spikes" or  obj.name== "spikeHead" or obj.name=="spikedBall"or obj.name=="saw"or obj.name=="plant"):
+        elif obj and (obj.name== "spikes" or  obj.name== "spikeHead" or obj.name=="spikedBall"or obj.name=="saw"or obj.name=="plant" or obj.name=="bee"):
             #if obj.name=="plant":
             #    obj.Hit()
-            player.make_hit()
+            #player.make_hit()
             pass
             
         elif obj and obj.name == "fire" and obj.animation_name=="off":
@@ -183,14 +181,18 @@ def handle_move(player, objects):
             obj.Jump()
 
         elif obj and (obj.name =="platformsGrey" or obj.name =="platformsBrown"):
-            player.make_slidePlat()
+            if obj.direction=="right":
+                player.make_slidePlat_right()
+            else:
+                player.make_slidePlat_left()
         elif obj and (obj.name=="fallingPlatforms"):
             obj.onFalling()
 
 
 
         elif obj and (obj.name !="platformsGrey" or obj.name !="platformsBrown"):
-            player.slidePlat=False
+            player.make_slidePlat_stop()
+            
 
        
 
@@ -210,13 +212,52 @@ def Handle_fan(player,fan):
         player.onfan_count=0
 
 
+def Handle_Bee(player,bee,objects):
+
+
+    for obj in objects:
+        if pygame.sprite.collide_rect( player,bee.dar):
+           if bee.darExist:
+                #player.make_hit()
+                objects.remove(bee.dar)
+                bee.darExist=False
+                bee.dar=Dar(bee.rect.x+20,bee.rect.y+34,16,16)    
+        elif pygame.sprite.collide_mask( obj,bee.dar):
+            if obj.name != "bee" and obj.name != "dar"and bee.darExist:
+                objects.remove(bee.dar)
+                bee.darExist=False
+                bee.dar=Dar(bee.rect.x+20,bee.rect.y+34,16,16)
+        elif bee.dar.rect.y > bee.rect.y+bee.dist:
+            if obj.name != "dar" and bee.darExist:
+                
+                objects.remove(bee.dar)
+                bee.darExist=False
+                bee.dar=Dar(bee.rect.x+20,bee.rect.y+34,16,16)
+       
+                
+                
+               
+               
+        
+    
+    if player.rect.x>=(bee.rect.x -800) and player.rect.x<=bee.rect.x+800:
+        
+        if not bee.darExist:
+            bee.Attack()
+            bee.darExist=True
+            objects.append(bee.dar)
+    else:
+        bee.StopAttack()
+
+
+
 def Handle_plant(player,plant,objects):
 
 
     for obj in objects:
         if pygame.sprite.collide_rect( player,plant.bullet):
            if plant.bulletExist:
-                player.make_hit()
+                #player.make_hit()
                 objects.remove(plant.bullet)
                 plant.bulletExist=False
                 plant.bullet=Bullet(plant.rect.x,plant.rect.y+16,16,16)    
@@ -225,7 +266,7 @@ def Handle_plant(player,plant,objects):
                 objects.remove(plant.bullet)
                 plant.bulletExist=False
                 plant.bullet=Bullet(plant.rect.x,plant.rect.y+16,16,16)
-        elif plant.bullet.rect.x < plant.rect.x-400:
+        elif plant.bullet.rect.x < plant.rect.x-plant.dist:
             if obj.name != "bullet" and plant.bulletExist:
                 objects.remove(plant.bullet)
                 plant.bulletExist=False
@@ -269,7 +310,7 @@ def main(window):
     paused=False
     ActualLevel=Level(player.levels,block_size)
     clock = pygame.time.Clock()
-    player.rect.x= 0
+    player.rect.x= block_size * 16 #0
     player.rect.y=HEIGHT - block_size-50
     player.checkPointX=0
     player.checkPointY=500
@@ -517,6 +558,11 @@ def main(window):
                     obj.loop()
                     if obj.bulletExist:
                         obj.bullet.loop()
+                elif obj.name=="bee":
+                    Handle_Bee(player,obj,objects)
+                    obj.loop()
+                    if obj.darExist:
+                        obj.dar.loop()
             for obj in decoration:
                 if obj.name == "checkPoint":
                     obj.loop()
@@ -532,14 +578,13 @@ def main(window):
             handle_Decoration(player,decoration)
             draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes,decoration)
         
-
+            
             if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or (
                     (player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0 and player.rect.x>0):
                 offset_x += player.x_vel
                 buttonLevels.rect.x +=player.x_vel
                 buttonRetry.rect.x +=player.x_vel
                 buttonNext.rect.x +=player.x_vel
-
             # if ((player.rect.bottom>=HEIGHT -scroll_area_height ) and player.y_vel > 0) or ((player.rect.bottom- offset_y<=scroll_area_width) and player.y_vel < 0) :
             #     offset_y += player.y_vel
             #     buttonLevels.rect.y +=player.y_vel
