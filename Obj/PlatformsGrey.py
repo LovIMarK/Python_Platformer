@@ -12,6 +12,7 @@ class PlatformsGrey(Object):
         self.direction=direction
         self.animation_count = 0
         self.animation_name = "Grey Off"
+        self.direction=direction
 
     def on(self):
         self.animation_name = "Grey On (32x8)"
@@ -27,7 +28,7 @@ class PlatformsGrey(Object):
         self.image = sprites[sprite_index]
         self.animation_count += 1
         if self.direction=="left":
-            pygame.transform.flip(self.image,True,True)
+            self.image = pygame.transform.flip(self.image,True,False)
         self.rect = self.image.get_rect(topleft=(self.rect.x, self.rect.y))
         
         self.mask = pygame.mask.from_surface(self.image)

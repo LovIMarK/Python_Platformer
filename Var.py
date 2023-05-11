@@ -19,7 +19,7 @@ import pygame
 
 pygame.init()
 
-from Sprite import *
+from Ground.Sprite import *
 
 pygame.display.set_caption("Platformer")
 
@@ -33,10 +33,11 @@ FPS = 60
 PLAYER_VEL = 5
 BIGDIRT=96,0
 LITTLEDIRT=144,0
-LITTLECHAIN=193,17
+LITTLECHAIN=192,16
 BIGROCK=0,0
 LITTLEROCK=48,0
 ROCKSTEIN=208,80
+WOODPLAT=272,16
 
 
 A=0,0

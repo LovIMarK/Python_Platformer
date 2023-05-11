@@ -1,6 +1,6 @@
 from Var import *
 from Objects import Object
-from Particules import Particules
+from Ground.Particules import Particules
 
 
 class FallingPlatform(Object):

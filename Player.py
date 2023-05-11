@@ -25,7 +25,8 @@ class Player(pygame.sprite.Sprite):
         self.jump=False
         self.hit = False
         self.hit_count = 0
-        self.slidePlat=False
+        self.slidePlatRight=False
+        self.slidePlatLeft=False
         self.checkPointX=0
         self.checkPointY=500
         self.onfan=False
@@ -62,7 +63,7 @@ class Player(pygame.sprite.Sprite):
             self.x_vel = -20
 
 
-        self.slidePlat=False
+        self.slidePlatRight=False
         self.onfan=False
         self.onfan_count=0
         self.y_vel = -self.GRAVITY * 8
@@ -85,22 +86,31 @@ class Player(pygame.sprite.Sprite):
 
 
 
-    def make_slidePlat(self):
-        self.slidePlat=True
+    def make_slidePlat_right(self):
+        self.slidePlatRight=True
+    def make_slidePlat_left(self):
+        self.slidePlatLeft=True
+
+
+    def make_slidePlat_stop(self):
+        self.slidePlatRight=False
+        self.slidePlatLeft=False
 
 
 
 
     def move_left(self, vel):
         self.x_vel = -vel
-        self.slidePlat=False
+        self.slidePlatRight=False
+        self.slidePlatLeft=False
         if self.direction != "left":
             self.direction = "left"
             self.animation_count = 0
 
     def move_right(self, vel):
         self.x_vel = vel
-        self.slidePlat=False
+        self.slidePlatLeft=False
+        self.slidePlatRight=False
         if self.direction != "right":
             self.direction = "right"
             self.animation_count = 0
@@ -114,7 +124,10 @@ class Player(pygame.sprite.Sprite):
             self.onfan_count+=1
             if self.onfan_count<FPS:
                 self.rect.y-=5
-
+        if self.slidePlatRight:
+            self.x_vel = PLAYER_VEL
+        if  self.slidePlatLeft:
+            self.x_vel = -PLAYER_VEL
         if self.lives<=0:
             self.rect.x=self.checkPointX
             self.rect.y=self.checkPointY
@@ -144,11 +157,8 @@ class Player(pygame.sprite.Sprite):
             self.slash_count=0
             self.slash=False
 
-        if self.slidePlat:
-            self.x_vel = 2
-
+     
         self.move(self.x_vel, self.y_vel)
-
         self.fall_count += 1
         self.update_sprite()
 
@@ -174,6 +184,8 @@ class Player(pygame.sprite.Sprite):
                 sprite_sheet = "double_jump"
         elif self.y_vel > self.GRAVITY * 2 and not self.slide:
             sprite_sheet = "fall"
+            self.slidePlatRight=False
+            self.slidePlatLeft=False
         elif self.x_vel != 0:
             sprite_sheet = "run"
         elif self.slide:

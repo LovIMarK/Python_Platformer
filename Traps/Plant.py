@@ -6,7 +6,7 @@ class Plant(Object,pygame.sprite.Sprite):
     ANIMATION_DELAY = 4
 
 
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height,dist):
         super().__init__(x, y, width, height, "plant")
         self.plant = load_sprite_sheets("Enemies", "Plant", width, height)
         self.image = self.plant["Idle (44x42)"][0]
@@ -21,6 +21,8 @@ class Plant(Object,pygame.sprite.Sprite):
         self.exist=True
         self.hit=False
         self.hit_count=0
+        self.dist=dist
+        #self.direction=direction
 
 
     def Stop(self):
@@ -74,3 +76,7 @@ class Plant(Object,pygame.sprite.Sprite):
         if  self.fire_count>FPS/2:
             self.fire_count=0
             self.StopAttack()
+
+
+
+

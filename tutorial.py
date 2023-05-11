@@ -156,7 +156,14 @@ def handle_move(player, objects):
             player.Slide()
         elif not collide_left and not collide_right:
             player.StopSlide()
-
+        # if keys[pygame.K_a]:
+        # player2_pos[0] -= player2_speed
+        # if keys[pygame.K_d]:
+        #     player2_pos[0] += player2_speed
+        # if keys[pygame.K_w]:
+        #     player2_pos[1] -= player2_speed
+        # if keys[pygame.K_s]:
+        #     player2_pos[1] += player2_speed
     
 
    
@@ -185,8 +192,13 @@ def handle_move(player, objects):
                 player.make_slidePlat_right()
             else:
                 player.make_slidePlat_left()
-        elif obj and (obj.name=="fallingPlatforms"):
+        elif obj and obj.name=="fallingPlatforms":
             obj.onFalling()
+
+        elif obj and obj.name=="cube" and not obj.invisible:
+            obj.HitTop()
+
+
 
 
 
@@ -223,11 +235,13 @@ def Handle_Bee(player,bee,objects):
                 bee.darExist=False
                 bee.dar=Dar(bee.rect.x+20,bee.rect.y+34,16,16)    
         elif pygame.sprite.collide_mask( obj,bee.dar):
+            if obj.name == "cube" and not obj.invisible:
+                obj.HitTop()
             if obj.name != "bee" and obj.name != "dar"and bee.darExist:
                 objects.remove(bee.dar)
                 bee.darExist=False
                 bee.dar=Dar(bee.rect.x+20,bee.rect.y+34,16,16)
-        elif bee.dar.rect.y > bee.rect.y+bee.dist:
+        elif bee.dar.rect.y > bee.rect.y+bee.dist or bee.dar.rect.y >HEIGHT:
             if obj.name != "dar" and bee.darExist:
                 
                 objects.remove(bee.dar)
@@ -266,7 +280,7 @@ def Handle_plant(player,plant,objects):
                 objects.remove(plant.bullet)
                 plant.bulletExist=False
                 plant.bullet=Bullet(plant.rect.x,plant.rect.y+16,16,16)
-        elif plant.bullet.rect.x < plant.rect.x-plant.dist:
+        elif plant.bullet.rect.x < plant.rect.x-plant.dist :
             if obj.name != "bullet" and plant.bulletExist:
                 objects.remove(plant.bullet)
                 plant.bulletExist=False
@@ -549,6 +563,8 @@ def main(window):
                     obj.loop()
                     Handle_fan(player,obj)
                 elif obj.name == "trampoline":
+                    obj.loop()
+                elif obj.name == "cube":
                     obj.loop()
                 elif obj.name == "spikeHead":
                     obj.loop()
