@@ -215,7 +215,7 @@ def handle_move(player, objects):
             
 def Handle_fan(player,fan):
     
-    if player.rect.y+300>=fan.rect.y and (player.rect.x >fan.rect.x-(fan.image.get_width()/2) and player.rect.x <fan.rect.x+(fan.image.get_width()/2)):
+    if player.rect.y+100>=fan.rect.y and (player.rect.x >fan.rect.x-(fan.image.get_width()/2) and player.rect.x <fan.rect.x+(fan.image.get_width()/2)):
         player.onfan_count=0
         player.onFan()
         fan.onFan()
@@ -324,7 +324,7 @@ def main(window):
     paused=False
     ActualLevel=Level(player.levels,block_size)
     clock = pygame.time.Clock()
-    player.rect.x= block_size * 16 #0
+    player.rect.x= 0
     player.rect.y=HEIGHT - block_size-50
     player.checkPointX=0
     player.checkPointY=500
@@ -463,7 +463,7 @@ def main(window):
                 
                 player.loop(FPS)
                 handle_move(player, objects)
-                for obj in objects:
+                for obj in decoration:
                     if obj.name=="end":
                         obj.loop()
                 draw(window, background, bg_image, player, objects, offset_x,offset_y,scroll,particules,textes,decoration)

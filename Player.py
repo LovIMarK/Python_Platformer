@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.onChrono=True
         self.slash=False
         self.slash_count=False
-        self.levels=2
+        self.levels=1
         self.unlockLevel=5
         self.score =0
 
