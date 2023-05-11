@@ -435,7 +435,6 @@ class Level():
 
         ]
 
-        trampoline=Trampoline(0,0, 28, 28)
         trampolines=[
             Trampoline(block_size *22 , HEIGHT - block_size  * 1-56, 28, 28),
             Trampoline(block_size *23 , HEIGHT - block_size  * 2-56, 28, 28),
@@ -451,11 +450,8 @@ class Level():
         for i in range(39):
             if i < 5 or i > 18 and i < 23 or i > 29:
                 floor.append(Block(i * block_size, HEIGHT - block_size, block_size,block_size,BIGDIRT))
-                # if i>=1 and i<35:
-                #     floor.append(Block(block_size * i-24, HEIGHT - block_size *1,48,96,(98,0)))
 
-        fruits=[Fruit( block_size * 12,HEIGHT - block_size*2,32,32,"Apple"),
-                Fruit( block_size * 12,HEIGHT - block_size*2,32,32,"Bananas")]
+       
 
         bees=[
             Bee(block_size *22+36 , HEIGHT - block_size  * 6, 36, 34,HEIGHT),
@@ -497,15 +493,9 @@ class Level():
                 *blocks,
                 *cubes,
                 *platformsGreys,
-                # *spikeHeads,
-                # *fires,
-                # *fans,
-                # *falling,
                 *trampolines,
                 *spikes,
                 *plants,
-                # *spikedBalls,
-                # *saws
                 *bees
                 ]
         
@@ -661,18 +651,10 @@ class Level():
 
         start.on()
         objects = [
-                #*floor,
                 *blocks,
-                # *platformsGreys,
                 *spikeHeads,
                 *fires,
-                # *fans,
-                # *falling,
-                # *trampolines,
                 *spikes,
-                # *plants,
-                #*spikedBalls,
-                # *saws
                 ]
 
         decoration=[
