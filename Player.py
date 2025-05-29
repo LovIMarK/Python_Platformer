@@ -1,13 +1,13 @@
-from Var import *
+from settings import *
 
 
 
 
 class Player(pygame.sprite.Sprite):
     COLOR = (255, 0, 0)
-    GRAVITY = 1
-    SPRITES = load_sprite_sheets("MainCharacters", "VirtualGuy", 32, 32, True)
-    ANIMATION_DELAY = 3
+    GRAVITY = 2
+    SPRITES = load_sprite_sheet_cached("MainCharacters", "VirtualGuy", 32, 32, True)
+    ANIMATION_DELAY = 1
     LIFE=1
 
     def __init__(self, x, y, width, height):
@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.slash=False
         self.slash_count=False
         self.levels=1
-        self.unlockLevel=5
+        self.unlockLevel=1
         self.score =0
 
 
@@ -66,7 +66,7 @@ class Player(pygame.sprite.Sprite):
         self.slidePlatRight=False
         self.onfan=False
         self.onfan_count=0
-        self.y_vel = -self.GRAVITY * 8
+        self.y_vel = -self.GRAVITY * 5
         self.slide=False
         self.animation_count = 0
         self.jump_count += 1
@@ -117,9 +117,9 @@ class Player(pygame.sprite.Sprite):
 
     def loop(self, fps):
         if  not self.onfan and not self.slide:
-            self.y_vel += min(1, (self.fall_count / fps) * self.GRAVITY)
+            self.y_vel += min(1, (self.fall_count / fps) * self.GRAVITY*2)
         elif self.slide:
-            self.y_vel += min(1, (self.fall_count / (fps*100)) * self.GRAVITY)
+            self.y_vel += min(1, (self.fall_count / (fps*100)) * self.GRAVITY*2)
         elif self.onfan:
             self.onfan_count+=1
             if self.onfan_count<FPS:
@@ -146,7 +146,7 @@ class Player(pygame.sprite.Sprite):
                 self.hit_count = 0
 
 
-        if self.hit_count > fps * 2:
+        if self.hit_count > fps //3:
             if self.hit:
                 self.lives-=1
             self.hit = False
