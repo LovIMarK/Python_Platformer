@@ -35,11 +35,6 @@ J’ai ajouté des améliorations par rapport au tutoriel de base :
 | ![Gameplay](ScreenShots/trampoline.png) | Le joueur utilise un trampoline pour rebondir plus haut et atteindre des plateformes.|
 | ![Gameplay](ScreenShots/checkpoint.png) |Le joueur atteint un point de contrôle (checkpoint) qui enregistre sa progression.|
 
-
-
-
-(*Ajoute tes propres captures d’écran dans un dossier `images/` et renomme les fichiers.*)
-
 ---
 
 ## 🚀 Lancer le jeu
