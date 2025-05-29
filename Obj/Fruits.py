@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Fruit(Object):
@@ -6,7 +6,7 @@ class Fruit(Object):
 
     def __init__(self, x, y, width, height,kind):
         super().__init__(x, y, width, height, "fruit")
-        self.fruit = load_sprite_sheets("Items", "Fruits", width, height)
+        self.fruit = load_sprite_sheet_cached("Items", "Fruits", width, height)
         self.image = self.fruit["Apple"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Text(Object):

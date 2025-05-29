@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 import numpy as np
 from Objects import Object
 
@@ -8,7 +8,7 @@ class Saw(Object):
 
     def __init__(self, x, y, width, height,numChains,speed,angle):
         super().__init__(x, y, width, height, "saw")
-        self.saw = load_sprite_sheets("Traps", "Saw", width, height)
+        self.saw = load_sprite_sheet_cached("Traps", "Saw", width, height)
         self.image = self.saw["off"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

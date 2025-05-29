@@ -1,10 +1,10 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Dar(Object):
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height, "dar")
-        self.dar = load_sprite_sheets("Enemies", "Bee", width, height)
+        self.dar = load_sprite_sheet_cached("Enemies", "Bee", width, height)
         self.image = self.dar["Bullet"][0]
         self.mask = pygame.mask.from_surface(self.image)
 

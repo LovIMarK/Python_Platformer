@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 import numpy as np
 from Objects import Object
 
@@ -7,7 +7,7 @@ class SpikedBall(Object):
 
     def __init__(self, x, y, width, height,numChains,speed,angle):
         super().__init__(x, y, width, height, "spikedBall")
-        self.spikedBall = load_sprite_sheets("Traps", "Spiked Ball", width, height)
+        self.spikedBall = load_sprite_sheet_cached("Traps", "Spiked Ball", width, height)
         self.image = self.spikedBall["Spiked Ball"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.chainExist=False

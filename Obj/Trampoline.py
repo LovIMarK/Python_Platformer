@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Trampoline(Object):
@@ -6,7 +6,7 @@ class Trampoline(Object):
 
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height, "trampoline")
-        self.trampoline = load_sprite_sheets("Traps", "Trampoline", width, height)
+        self.trampoline = load_sprite_sheet_cached("Traps", "Trampoline", width, height)
         self.image = self.trampoline["Idle"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

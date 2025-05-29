@@ -1,13 +1,13 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 
 class SpikeHead(Object):
-    ANIMATION_DELAY = 10
+    ANIMATION_DELAY = 7
 
     def __init__(self, x, y, width, height,direction=0):
         super().__init__(x, y, width, height, "spikeHead")
-        self.platforms = load_sprite_sheets("Traps", "Spike Head", width, height)
+        self.platforms = load_sprite_sheet_cached("Traps", "Spike Head", width, height)
         self.image = self.platforms["Idle"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

@@ -1,5 +1,5 @@
 
-from Var import *
+from settings import *
 
 
 class Object(pygame.sprite.Sprite):

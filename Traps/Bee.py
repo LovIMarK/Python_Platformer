@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 from Dar import Dar
 
@@ -8,7 +8,7 @@ class Bee(Object,pygame.sprite.Sprite):
 
     def __init__(self, x, y, width, height,dist):
         super().__init__(x, y, width, height, "bee")
-        self.bee = load_sprite_sheets("Enemies", "Bee", width, height)
+        self.bee = load_sprite_sheet_cached("Enemies", "Bee", width, height)
         self.image = self.bee["Idle (36x34)"][0]
         self.mask = pygame.mask.from_surface(self.image)
         #self.direction = "left"

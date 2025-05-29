@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class PlatformsGrey(Object):
@@ -6,12 +6,12 @@ class PlatformsGrey(Object):
 
     def __init__(self, x, y, width, height,direction):
         super().__init__(x, y, width, height, "platformsGrey")
-        self.platforms = load_sprite_sheets("Traps", "Platforms", width, height)
+        self.platforms = load_sprite_sheet_cached("Traps", "Platforms", width, height)
         self.image = self.platforms["Grey Off"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.direction=direction
         self.animation_count = 0
-        self.animation_name = "Grey Off"
+        self.animation_name = "Grey On (32x8)"
         self.direction=direction
 
     def on(self):

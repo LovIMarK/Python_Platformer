@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Checkpoint(Object):
@@ -6,7 +6,7 @@ class Checkpoint(Object):
 
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height, "checkPoint")
-        self.checkpoint = load_sprite_sheets("Items", "Checkpoints\Checkpoint", width, height)
+        self.checkpoint = load_sprite_sheet_cached("Items", os.path.join("Checkpoints", "Checkpoint"), width, height)
         self.image = self.checkpoint["Checkpoint (No Flag)"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

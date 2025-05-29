@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Cube(Object):
@@ -6,7 +6,7 @@ class Cube(Object):
 
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height, "cube")
-        self.platforms = load_sprite_sheets("Traps", "Blocks", width, height)
+        self.platforms = load_sprite_sheet_cached("Traps", "Blocks", width, height)
         self.image = self.platforms["Idle"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 from Bullet import Bullet
 
@@ -8,7 +8,7 @@ class Plant(Object,pygame.sprite.Sprite):
 
     def __init__(self, x, y, width, height,dist):
         super().__init__(x, y, width, height, "plant")
-        self.plant = load_sprite_sheets("Enemies", "Plant", width, height)
+        self.plant = load_sprite_sheet_cached("Enemies", "Plant", width, height)
         self.image = self.plant["Idle (44x42)"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.direction = "left"

@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Start(Object):
@@ -6,7 +6,7 @@ class Start(Object):
 
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height, "start")
-        self.start = load_sprite_sheets("Items", "Checkpoints\Start", width, height)
+        self.start = load_sprite_sheet_cached("Items", os.path.join("Checkpoints", "Start"), width, height)
         self.image = self.start["Start (Idle)"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

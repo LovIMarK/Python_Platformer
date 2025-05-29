@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class PlatformsBrown(Object):
@@ -6,7 +6,7 @@ class PlatformsBrown(Object):
 
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height, "platformsBrown")
-        self.platforms = load_sprite_sheets("Traps", "Platforms", width, height)
+        self.platforms = load_sprite_sheet_cached("Traps", "Platforms", width, height)
         self.image = self.platforms["Brown Off"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0

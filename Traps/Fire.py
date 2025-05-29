@@ -1,4 +1,4 @@
-from Var import *
+from settings import *
 from Objects import Object
 
 class Fire(Object):
@@ -6,7 +6,7 @@ class Fire(Object):
 
     def __init__(self, x, y, width, height,fire=False):
         super().__init__(x, y, width, height, "fire")
-        self.fire = load_sprite_sheets("Traps", "Fire", width, height)
+        self.fire = load_sprite_sheet_cached("Traps", "Fire", width, height)
         self.image = self.fire["off"][0]
         self.mask = pygame.mask.from_surface(self.image)
         self.animation_count = 0
