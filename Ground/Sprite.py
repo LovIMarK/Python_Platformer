@@ -1,5 +1,5 @@
 import os
-from settings import *
+from Utils.settings import *
 
 def flip(sprites):
     return [pygame.transform.flip(sprite, True, False) for sprite in sprites]

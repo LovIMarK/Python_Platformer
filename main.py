@@ -1,4 +1,4 @@
-from game import launch
+from Core.game import launch
 
 if __name__ == "__main__":
     launch()

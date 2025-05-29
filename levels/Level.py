@@ -1,6 +1,6 @@
 
-from settings import *
-from Import import *
+from Utils.settings import *
+from Core.Import import *
 
 
 class Level():

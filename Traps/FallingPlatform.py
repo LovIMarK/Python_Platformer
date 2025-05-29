@@ -1,5 +1,5 @@
-from settings import *
-from Objects import Object
+from Utils.settings import *
+from Core.Objects import Object
 from Ground.Particules import Particules
 
 class FallingPlatform(Object):

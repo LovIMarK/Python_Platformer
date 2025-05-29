@@ -1,5 +1,5 @@
-from settings import *
-from Objects import Object
+from Utils.settings import *
+from Core.Objects import Object
 from Bullet import Bullet
 
 class Plant(Object,pygame.sprite.Sprite):

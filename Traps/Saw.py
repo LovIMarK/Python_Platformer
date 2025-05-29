@@ -1,6 +1,7 @@
-from settings import *
+from Utils.settings import *
+from Core.Objects import Object
 import numpy as np
-from Objects import Object
+
 
 
 class Saw(Object):

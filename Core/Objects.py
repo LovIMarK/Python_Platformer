@@ -1,5 +1,5 @@
 
-from settings import *
+from Utils.settings import *
 
 
 class Object(pygame.sprite.Sprite):

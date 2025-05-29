@@ -1,12 +1,12 @@
-from settings import *
-from levels.Level import *
+from Utils.settings import *
+from Levels.Level import *
 from Ground.Button import Button
 from Ground.Text import Text
 from Player import Player
 import pygame
 import time
 
-from utils.game_logic import (
+from Utils.game_logic import (
     handle_move,
     handle_Decoration,
     Handle_plant,

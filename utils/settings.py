@@ -5,7 +5,7 @@ from os import listdir
 from os.path import isfile, join
 import pygame
 
-from assets_cache import load_sprite_sheet_cached
+from Utils.assets_cache import load_sprite_sheet_cached
 
 
 pygame.init()
