@@ -1,37 +1,57 @@
-from Utils.settings import *
-from Core.Objects import Object
+from Utils.settings import load_sprite_sheet_cached, FPS
+from Core.objects import Object
+import pygame
 
 class Fire(Object):
     ANIMATION_DELAY = 3
 
-    def __init__(self, x, y, width, height,fire=False):
+    def __init__(self, x, y, width, height, loop_fire=False):
+        """
+        Initialize the fire trap object.
+
+        Args:
+            x (int): X-coordinate.
+            y (int): Y-coordinate.
+            width (int): Width of the sprite.
+            height (int): Height of the sprite.
+            loop_fire (bool): If True, the fire cycles on/off endlessly.
+        """
         super().__init__(x, y, width, height, "fire")
-        self.fire = load_sprite_sheet_cached("Traps", "Fire", width, height)
-        self.image = self.fire["off"][0]
+        self.sprites = load_sprite_sheet_cached("Traps", "Fire", width, height)
+        self.image = self.sprites["off"][0]
         self.mask = pygame.mask.from_surface(self.image)
+
         self.animation_count = 0
         self.animation_name = "off"
-        self.onFire=False
-        self.fire_count=0
-        self.offFire=False
-        self.fireOff_count=0
-        self.infini=fire
 
-    def on(self):
+        self.is_igniting = False
+        self.ignite_timer = 0
+
+        self.is_extinguishing = False
+        self.extinguish_timer = 0
+
+        self.loop_fire = loop_fire
+
+    def turn_on(self):
+        """Activate fire animation."""
         self.animation_name = "on"
-        self.offFire=True
+        self.is_extinguishing = True
 
-    def off(self):
+    def turn_off(self):
+        """Deactivate fire animation."""
         self.animation_name = "off"
-    
-    def hit(self):
-        self.animation_name = "hit"
-        self.onFire=True
 
-    def loop(self):
-        sprites = self.fire[self.animation_name]
-        sprite_index = (self.animation_count //
-                        self.ANIMATION_DELAY) % len(sprites)
+    def hit(self):
+        """Play hit animation and prepare to turn on fire."""
+        self.animation_name = "hit"
+        self.is_igniting = True
+
+    def update(self):
+        """
+        Update the animation frame and state transitions for the fire object.
+        """
+        sprites = self.sprites[self.animation_name]
+        sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
         self.image = sprites[sprite_index]
         self.animation_count += 1
 
@@ -40,16 +60,17 @@ class Fire(Object):
 
         if self.animation_count // self.ANIMATION_DELAY > len(sprites):
             self.animation_count = 0
-        if self.onFire:
-             self.fire_count+=1
-        if  self.fire_count>FPS/3:
-            self.on()
-            self.fire_count=0
-            self.onFire=False
-        if self.offFire:
-            self.fireOff_count+=1
-        if  self.fireOff_count>FPS*2 and not self.infini:
-            self.off()
-            self.fireOff_count=0
-            self.offFire=False
-        
+
+        if self.is_igniting:
+            self.ignite_timer += 1
+            if self.ignite_timer > FPS / 3:
+                self.turn_on()
+                self.ignite_timer = 0
+                self.is_igniting = False
+
+        if self.is_extinguishing:
+            self.extinguish_timer += 1
+            if self.extinguish_timer > FPS * 2 and not self.loop_fire:
+                self.turn_off()
+                self.extinguish_timer = 0
+                self.is_extinguishing = False

@@ -1,5 +1,5 @@
 from Utils.settings import load_sprite_sheet_cached
-from Core.Objects import Object
+from Core.objects import Object
 import pygame
 
 class Dart(Object):

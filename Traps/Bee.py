@@ -1,78 +1,93 @@
-from Utils.settings import *
-from Core.Objects import Object
-from Dar import Dar
+from Utils.settings import FPS, load_sprite_sheet_cached
+from Core.objects import Object
+from Traps.dart import Dart
+import pygame
 
-class Bee(Object,pygame.sprite.Sprite):
+class Bee(Object, pygame.sprite.Sprite):
+    """
+    Represents a bee enemy that can shoot projectiles (Dar) and be destroyed.
+    """
     ANIMATION_DELAY = 4
 
+    def __init__(self, x, y, width, height, dist):
+        """
+        Initialize the bee enemy.
 
-    def __init__(self, x, y, width, height,dist):
+        Args:
+            x (int): X-coordinate.
+            y (int): Y-coordinate.
+            width (int): Width of the sprite.
+            height (int): Height of the sprite.
+            dist (int): Maximum range for its projectile.
+        """
         super().__init__(x, y, width, height, "bee")
-        self.bee = load_sprite_sheet_cached("Enemies", "Bee", width, height)
-        self.image = self.bee["Idle (36x34)"][0]
-        self.mask = pygame.mask.from_surface(self.image)
-        #self.direction = "left"
-        self.dar=Dar(self.rect.x+20,self.rect.y+34,16,16)
-        self.animation_count = 0
+        self.bee_sprites = load_sprite_sheet_cached("Enemies", "Bee", width, height)
         self.animation_name = "Idle (36x34)"
-        self.fire=False
-        self.fire_count=0
-        self.darExist=False
-        self.exist=True
-        self.hit=False
-        self.hit_count=0
-        self.dist=dist
-        #self.direction=direction
+        self.image = self.bee_sprites[self.animation_name][0]
+        self.mask = pygame.mask.from_surface(self.image)
 
+        self.dart = Dart(self.rect.x + 20, self.rect.y + 34, 16, 16)
+        self.dart_exists = False
 
-    def Stop(self):
-        self.exist=False
+        self.animation_count = 0
+        self.fire = False
+        self.fire_count = 0
 
+        self.exist = True
+        self.hit = False
+        self.hit_count = 0
+        self.dist = dist
 
+    def stop(self):
+        """Remove the bee from the game."""
+        self.exist = False
 
-
-
-    def Attack(self):
-       
+    def attack(self):
+        """Start firing projectile if bee is active."""
         if self.exist:
-            self.fire=True
-            self.Fire()
+            self.fire = True
+            self.set_fire_animation()
         else:
-            self.fire=False
-            self.darExist=False
+            self.fire = False
+            self.dart_exists = False
 
-    def StopAttack(self):
+    def stop_attack(self):
+        """Stop firing and return to idle if not hit."""
         if not self.hit:
             self.animation_name = "Idle (36x34)"
-        self.fire=False
+        self.fire = False
 
-    def Hit(self):
-        self.animation_name = "Hit (36x34)"
-        self.hit =True
-
-    def Fire(self):
+    def set_fire_animation(self):
+        """Set attack animation if not hit."""
         if not self.hit:
             self.animation_name = "Attack (36x34)"
 
+    def hit_by_projectile(self):
+        """Set hit animation and flag bee as hit."""
+        self.animation_name = "Hit (36x34)"
+        self.hit = True
 
-    def loop(self):
-        sprites = self.bee[self.animation_name]
-        sprite_index = (self.animation_count //
-                        self.ANIMATION_DELAY) % len(sprites)
+    def update(self):
+        """Update the bee's animation and status each frame."""
+        sprites = self.bee_sprites[self.animation_name]
+        sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
         self.image = sprites[sprite_index]
         self.animation_count += 1
 
         self.rect = self.image.get_rect(topleft=(self.rect.x, self.rect.y))
         self.mask = pygame.mask.from_surface(self.image)
 
-        if self.animation_count // self.ANIMATION_DELAY > len(sprites):
+        if self.animation_count // self.ANIMATION_DELAY >= len(sprites):
             self.animation_count = 0
+
         if self.fire:
-            self.fire_count+=1
+            self.fire_count += 1
         if self.hit:
-            self.hit_count+=1
-        if self.hit_count>FPS/2:
-            self.Stop()
-        if  self.fire_count>FPS/2:
-            self.fire_count=0
-            self.StopAttack()
+            self.hit_count += 1
+
+        if self.hit_count > FPS / 2:
+            self.stop()
+
+        if self.fire_count > FPS / 2:
+            self.fire_count = 0
+            self.stop_attack()
