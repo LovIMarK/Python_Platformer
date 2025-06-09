@@ -6,7 +6,7 @@ Each uses a specific sprite sheet and animation logic.
 """
 
 from Utils.settings import *
-from Core.Objects import Object
+from Core.objects import Object
 
 
 class Start(Object):
