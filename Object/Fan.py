@@ -1,46 +1,81 @@
 from Utils.settings import *
-from Core.Objects import Object
-from Ground.Particules import Particules
+from Core.objects import Object
+from Ground.particles import Particles
 
 class Fan(Object):
+    """
+    Fan object that emits upward particles and pushes the player when active.
+    """
+
     ANIMATION_DELAY = 3
 
     def __init__(self, x, y, width, height):
+        """
+        Initialize the fan with animation frames and particle stream.
+
+        Args:
+            x (int): X position of the fan.
+            y (int): Y position of the fan.
+            width (int): Width of the fan.
+            height (int): Height of the fan.
+        """
         super().__init__(x, y, width, height, "fan")
-        self.fan = load_sprite_sheet_cached("Traps", "Fan", width, height)
-        self.image = self.fan["Off"][0]
+        self.sprites = load_sprite_sheet_cached("Traps", "Fan", width, height)
+        self.image = self.sprites["Off"][0]
         self.mask = pygame.mask.from_surface(self.image)
+
+        self.animation_name = "On (24x8)"
         self.animation_count = 0
-        self.animation_name = "Off"
-        self.fan_count = 0
-        self.particuleExist = False
-        self.particule = [Particules(self.rect.x, self.rect.y - 16 - 40 * i, 16, 16) for i in range(4)]
 
-    def onFan(self):
-        self.fan_count += 1
+        self.particleExist = False
+        self.particles_visible = True
 
-    def on(self):
-        self.animation_name = "On (24x8)"
+        # Create a grid of upward particles
+        self.particles = []
+        cols = 3
+        rows = 3
+        x_spacing = self.rect.width / cols
+        y_spacing = 20  # Vertical spacing between particles
 
-    def off(self):
-        self.animation_name = "Off"
+        for row in range(rows):
+            for col in range(cols):
+                x_pos = self.rect.x + col * x_spacing + (x_spacing - 16) / 2
+                y_pos = self.rect.y - row * y_spacing
+                self.particles.append(
+                    Particles(x_pos, y_pos, 16, 16, dy=-2)
+                )
 
-    def loop(self):
-        self.animation_name = "On (24x8)"
+    def update_particles_visibility(self, visible: bool):
+        """
+        Show or hide the fan's particles visually and logically.
 
-        sprites = self.fan[self.animation_name]
+        Args:
+            visible (bool): Whether particles should be visible and animated.
+        """
+        self.particles_visible = visible
+        alpha = 170 if visible else 0
+        for p in self.particles:
+            p.image.set_alpha(alpha)
+
+    def update(self):
+        """
+        Update fan animation and optionally particles if active.
+        """
+        self.animation_name = "On (24x8)" 
+
+         
+        # Choose animation based on state
+        sprites = self.sprites[self.animation_name]
         sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
         self.image = sprites[sprite_index]
         self.animation_count += 1
 
-        self.rect = self.image.get_rect(topleft=(self.rect.x, self.rect.y))
-        self.mask = pygame.mask.from_surface(self.image)
-
-        for obj in self.particule:
-            obj.loop()
-            obj.rect.y -= 4
-            if obj.rect.y < self.rect.y - 300:
-                obj.rect.y = self.rect.y - 16
-
         if self.animation_count // self.ANIMATION_DELAY > len(sprites):
             self.animation_count = 0
+
+        # Animate particles only if active
+        for p in self.particles:
+            p.update()
+
+        self.rect = self.image.get_rect(topleft=(self.rect.x, self.rect.y))
+        self.mask = pygame.mask.from_surface(self.image)
