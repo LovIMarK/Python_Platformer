@@ -1,45 +1,66 @@
-from Utils.settings import *
-from Core.Objects import Object
+import pygame
+from Utils.settings import FPS, load_sprite_sheet_cached
+from Core.objects import Object
 
 class Trampoline(Object):
+    """Represents an animated trampoline object."""
+
     ANIMATION_DELAY = 3
 
     def __init__(self, x, y, width, height):
+        """
+        Initialize a trampoline object.
+
+        Args:
+            x (int): X coordinate of trampoline.
+            y (int): Y coordinate of trampoline.
+            width (int): Width of the trampoline.
+            height (int): Height of the trampoline.
+        """
         super().__init__(x, y, width, height, "trampoline")
-        self.trampoline = load_sprite_sheet_cached("Traps", "Trampoline", width, height)
-        self.image = self.trampoline["Idle"][0]
+        self.sprites = load_sprite_sheet_cached("Traps", "Trampoline", width, height)
+        self.image = self.sprites["Idle"][0]
         self.mask = pygame.mask.from_surface(self.image)
-        self.animation_count = 0
-        self.animation_name = "Idle"
-        self.onTrampoline=False
-        self.trampoline_count=0
 
-    
+        self.animation_frame = 0
+        self.current_animation = "Idle"
+        self.is_jumping = False
+        self.jump_timer = 0
 
-    def loop(self):
-        sprites = self.trampoline[self.animation_name]
-        sprite_index = (self.animation_count //
-                        self.ANIMATION_DELAY) % len(sprites)
-        self.image = sprites[sprite_index]
-        self.animation_count += 1
-
+    def update(self):
+        """
+        Update the trampoline animation each frame.
+        """
+        current_sprites = self.sprites[self.current_animation]
+        sprite_index = (self.animation_frame // self.ANIMATION_DELAY) % len(current_sprites)
+        self.image = current_sprites[sprite_index]
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect(topleft=(self.rect.x, self.rect.y))
-        self.mask = pygame.mask.from_surface(self.image)
 
-        if self.animation_count // self.ANIMATION_DELAY > len(sprites):
-            self.animation_count = 0
-        if  self.onTrampoline:
-            self.trampoline_count+=1
-            if self.trampoline_count > FPS/3:
-                self.stopJumping()
+        self.animation_frame += 1
 
+        # Reset the animation cycle if complete
+        if self.animation_frame // self.ANIMATION_DELAY >= len(current_sprites):
+            self.animation_frame = 0
 
-    def Jump(self):
-        self.animation_name = "Jump (28x28)"
-        self.onTrampoline=True
-       
-            
-    def stopJumping(self):
-        self.animation_name = "Idle"
-        self.trampoline_count=0
-        self.onTrampoline=False
+        # Handle trampoline jump timing
+        if self.is_jumping:
+            self.jump_timer += 1
+            if self.jump_timer > FPS / 3:
+                self.stop_jumping()
+
+    def start_jumping(self):
+        """
+        Trigger the trampoline's jumping animation.
+        """
+        self.current_animation = "Jump (28x28)"
+        self.is_jumping = True
+        self.jump_timer = 0
+
+    def stop_jumping(self):
+        """
+        Reset trampoline to idle state after jump animation.
+        """
+        self.current_animation = "Idle"
+        self.is_jumping = False
+        self.jump_timer = 0
