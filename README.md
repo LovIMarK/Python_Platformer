@@ -1,68 +1,72 @@
 # Python Platformer Game
 
-Un **jeu de plateforme en Python**, développé avec **Pygame**, inspiré du tutoriel YouTube de [freeCodeCamp.org](https://www.youtube.com/watch?v=6gLeplbqtqg).
+![Python](https://img.shields.io/badge/language-python-blue)
+![Pygame](https://img.shields.io/badge/library-pygame-lightgrey)
+![Status](https://img.shields.io/badge/project-learning--project-informational)
 
-Ce projet personnel a pour objectif de renforcer mes compétences en Python, Pygame et développement de jeux vidéo.  
-Il inclut plusieurs niveaux, des pièges variés, des animations dynamiques, des particules, et un système de progression par niveaux.
+A 2D platformer game built with Python and Pygame, inspired by the freeCodeCamp.org tutorial:  
+https://www.youtube.com/watch?v=6gLeplbqtqg
 
-📅 **Date de création** : mai 2023
-
----
-
-## 🎮 Description
-
-Ce jeu est un platformer classique avec :  
-- Sauts, double sauts  
-- Plateformes mouvantes  
-- Pics, pièges, ventilateurs, projectiles  
-- Checkpoints, chrono, score  
-- Animations fluides pour le joueur et les pièges  
-
-### ✅ Améliorations déjà apportées :
-- Intégration de sprites personnalisés
-- Double saut
-- Fruits collectables comme système de score
-- Attaque au corps-à-corps (slash)
+This personal project was developed in May 2023 during my CFC to strengthen my skills in Python and game development.  
+It includes multiple levels, traps, dynamic particles, animations, and a level progression system.
 
 ---
 
-## 🧭 Prochaines améliorations
+## Features
 
-- 🔁 **Refactorisation en POO complète** :  
-  Transformer les entités du jeu en véritables objets orientés objets, pour améliorer la clarté, la modularité et la maintenabilité du code.
-
-- 🧩 **Séparation des responsabilités** :  
-  - Créer un module dédié à la gestion des **interactions entre objets** (collisions, effets, déclenchements).  
-  - Séparer un fichier spécifique pour la **gestion des entrées clavier** (touche saut, déplacement, attaque, etc.).
-
-- 📊 Ajout futur d’un système de statistiques ou d’XP (expérience).
+- Platformer mechanics with single and double jump
+- Moving platforms, falling platforms
+- Traps: spikes, fire, fans, projectiles
+- Timer, checkpoint, collectible fruits (scoring system)
+- Melee attack (slash)
+- Over 50 unlockable levels
+- Custom player and trap animations
 
 ---
 
-## 📷 Captures d’écran
+## Work in Progress
+
+Planned improvements:
+
+- Full object-oriented refactoring of the game architecture
+- Code cleanup: separating collision handling and keyboard input logic
+- New features: XP system and player statistics
+
+---
+
+## Screenshots
 
 | Image | Description |
 |-------|-------------|
-| ![Gameplay](ScreenShots/level1.png) | Un aperçu du premier niveau avec des plateformes simples et des pièges basiques. |
-| ![Gameplay](ScreenShots/levels.png) | La sélection des niveaux disponibles dans le jeu, avec plus de 50 niveaux débloquables. |
-| ![Gameplay](ScreenShots/level2.png) | Un aperçu du second niveau. |
-| ![Gameplay](ScreenShots/fire.png) | Le joueur saute au-dessus de pièges de feu : attention à bien calculer son saut ! |
-| ![Gameplay](ScreenShots/trampoline.png) | Le joueur utilise un trampoline pour rebondir plus haut et atteindre des plateformes. |
-| ![Gameplay](ScreenShots/checkpoint.png) | Le joueur atteint un point de contrôle (checkpoint) qui enregistre sa progression. |
+| ![Level 1](ScreenShots/level1.png) | Basic platforms and traps in level 1 |
+| ![Level Select](ScreenShots/levels.png) | Level selection screen with over 50 levels |
+| ![Level 2](ScreenShots/level2.png) | More complex level with increased difficulty |
+| ![Fire Trap](ScreenShots/fire.png) | Player avoiding fire traps with a precise jump |
+| ![Trampoline](ScreenShots/trampoline.png) | Using a trampoline to reach higher platforms |
+| ![Checkpoint](ScreenShots/checkpoint.png) | Checkpoint reached and progress saved |
 
 ---
 
-## 🚀 Lancer le jeu
+## How to Run
 
-Assurez-vous d’avoir installé Python (>= 3.9) et Pygame.
+Requirements:
+- Python >= 3.9
+- Pygame
 
 ```bash
-# Cloner le repo
-git clone https://github.com/ton-github/ton-projet.git
-cd ton-projet
+# Clone the repository
+git clone https://github.com/your-username/your-project.git
+cd your-project
 
-# Installer les dépendances
+# Install dependencies
 pip install pygame
 
-# Lancer le jeu
+# Run the game
 python game.py
+```
+
+---
+
+## License
+
+This project is for educational purposes and personal learning.
