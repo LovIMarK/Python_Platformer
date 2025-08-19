@@ -53,20 +53,15 @@ Requirements:
 - Python >= 3.9
 - Pygame
 
-```bash
-# Clone the repository
-git clone https://github.com/your-username/your-project.git
-cd your-project
+# Clone
+git clone https://github.com/LovIMarK/Python_Platformer.git
+cd Python_Platformer
 
-# Install dependencies
+# Install
 pip install pygame
 
-# Run the game
-python game.py
-```
-
----
+# Run
+python main.py
 
 ## License
-
 This project is for educational purposes and personal learning.
